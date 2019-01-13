@@ -1,6 +1,8 @@
 # Watcher of Friends Online
 
-[TODO. There will be project description]
+Script return names of online friends in VK.com
+and return nothing if no one online now.
+Require user login and password on run.
 
 # How to Install
 
@@ -11,6 +13,14 @@ pip install -r requirements.txt # alternatively try pip3
 ```
 
 Remember, it is recommended to use [virtualenv/venv](https://devman.org/encyclopedia/pip/pip_virtualenv/) for better isolation.
+# How to Run
+```#!bash
+python3 vk_friends_online.py
+Login: korabkoff@gmail.com
+Password:
+Egor Kunovskiy
+Kim Korabkova
+```
 
 # Project Goals
 
