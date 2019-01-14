@@ -3,7 +3,7 @@
 Script return names of online friends in VK.com
 and return nothing if no one online now.
 Require user login and password on run.
-
+to obtain app_id you are require register your app at https://vk.com/dev
 # How to Install
 
 Python 3 should be already installed. Then use pip (or pip3 if there is a conflict with old Python 2 setup) to install dependencies:
