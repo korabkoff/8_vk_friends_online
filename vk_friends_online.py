@@ -2,16 +2,12 @@ import vk
 import getpass
 
 
-APP_ID = 6807175  # чтобы получить app_id, нужно зарегистрировать своё приложение на https://vk.com/dev
-
-
 def get_user_login():
     try:
         login = input('Login: ')
         return login
 
     except ValueError:
-        print("Invalid input")
         return None
 
 
@@ -23,35 +19,35 @@ def get_online_friends(login, password):
     if not login or not password:
         return None
 
-    apiversion = 5.92
     try:
         session = vk.AuthSession(
-                                app_id=APP_ID,
+                                app_id=6807175,
                                 user_login=login,
                                 user_password=password,
                                 scope='friends'
                                 )
         api = vk.API(session)
 
-    except vk.exceptions.VkAuthError as er:
-        print(er)
+    except vk.exceptions.VkAuthError:
         return None
 
-    ids_friends_online = api.friends.getOnline(v=apiversion)
+    all_friends_data = api.friends.get(fields=('first_name, last_name', 'online'), v=5.92)['items']
 
     friends_online = []
-    for friend_id in ids_friends_online:
-        friend_data = api.users.get(user_ids=(friend_id), v=apiversion)[0]
-        friends_online.append(friend_data['first_name'] + ' ' + friend_data['last_name'])
+    for friend_data in all_friends_data:
+        if friend_data['online'] == 1:
+            first_name = friend_data['first_name']
+            last_name = friend_data['last_name']
+            friends_online.append(first_name + ' ' + last_name)
 
     return friends_online
 
 
 def output_friends_to_console(friends_online):
     """
-    >>> output_friends_to_console(['korabkova Kim','Astahov Name'])
+    >>> output_friends_to_console(['korabkova Kim','Astahov'])
     korabkova Kim
-    Astahov Name
+    Astahov
     """
 
     if not friends_online:
