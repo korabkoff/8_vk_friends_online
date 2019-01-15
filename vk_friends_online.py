@@ -31,16 +31,17 @@ def get_online_friends(login, password):
     except vk.exceptions.VkAuthError:
         return None
 
-    all_friends_data = api.friends.get(fields=('first_name, last_name', 'online'), v=5.92)['items']
+    friends_online_data = list(filter(lambda x: x['online'] == 1,
+                                          api.friends.get(fields=('first_name, last_name', 'online'), v=5.92)['items']))
+
 
     friends_online = []
-    for friend_data in all_friends_data:
-        if friend_data['online'] == 1:
-            first_name = friend_data['first_name']
-            last_name = friend_data['last_name']
-            friends_online.append(first_name + ' ' + last_name)
+    for friend_data in friends_online_data:
+        first_name = friend_data['first_name']
+        last_name = friend_data['last_name']
+        friends_online.append(first_name + ' ' + last_name)
 
-    return friends_online
+        return friends_online
 
 
 def output_friends_to_console(friends_online):
