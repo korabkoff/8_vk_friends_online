@@ -31,14 +31,13 @@ def get_online_friends(login, password):
     except vk.exceptions.VkAuthError:
         return None
 
-    friends_online_data = list(api.friends.get(fields=('first_name, last_name', 'online'), v=5.92)['items'])
+    friends_online_data = api.users.get(user_ids=(api.friends.getOnline(v=5.92)), v=5.92)
 
     friends_online = []
     for friend_data in friends_online_data:
-        if friend_data['online'] == 1:
-            first_name = friend_data['first_name']
-            last_name = friend_data['last_name']
-            friends_online.append(first_name + ' ' + last_name)
+        first_name = friend_data['first_name']
+        last_name = friend_data['last_name']
+        friends_online.append(first_name + ' ' + last_name)
 
     return friends_online
 
