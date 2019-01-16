@@ -15,31 +15,24 @@ def get_user_password():
     return getpass.getpass()
 
 
-def get_online_friends(login, password):
+def get_online_friends_data(login, password, app_id, version):
     if not login or not password:
         return None
 
     try:
         session = vk.AuthSession(
-                                app_id=6807175,
-                                user_login=login,
-                                user_password=password,
-                                scope='friends'
-                                )
+            app_id=app_id,
+            user_login=login,
+            user_password=password,
+            scope='friends'
+        )
         api = vk.API(session)
+        online_friends_data = api.users.get(user_ids=(api.friends.getOnline(v=version)), v=version)
 
     except vk.exceptions.VkAuthError:
-        return None
+        online_friends_data = None
 
-    friends_online_data = api.users.get(user_ids=(api.friends.getOnline(v=5.92)), v=5.92)
-
-    friends_online = []
-    for friend_data in friends_online_data:
-        first_name = friend_data['first_name']
-        last_name = friend_data['last_name']
-        friends_online.append(first_name + ' ' + last_name)
-
-    return friends_online
+    return online_friends_data
 
 
 def output_friends_to_console(friends_online):
@@ -50,13 +43,28 @@ def output_friends_to_console(friends_online):
     """
 
     if not friends_online:
+        print('Something goes wrong')
+        return None
+    if friends_online == []:
+        print('No friends oline :(')
         return None
 
     [print(friend_online) for friend_online in friends_online]
 
 
 if __name__ == '__main__':
+
     login = get_user_login()
+
     password = get_user_password()
-    friends_online = get_online_friends(login, password)
+
+    online_friends_data = get_online_friends_data(login, password, 6807175, 5.92)
+
+    friends_online = []
+    try:
+        for friend_data in online_friends_data:
+            friends_online.append('{} {}'.format(friend_data['first_name'], friend_data['last_name']))
+    except TypeError:
+        friends_online = None
+
     output_friends_to_console(friends_online)
