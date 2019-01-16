@@ -58,7 +58,9 @@ if __name__ == '__main__':
 
     password = get_user_password()
 
-    online_friends_data = get_online_friends_data(login, password, 6807175, 5.92)
+    app_id = 6807175
+    version = 5.92
+    online_friends_data = get_online_friends_data(login, password, app_id, version)
 
     friends_online = []
     try:
